@@ -1,7 +1,5 @@
 var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// --- código dentro das letras do nome ----------------------------------
-
 var snippet = [
   "Route::get('/clientes/{id}', [ClienteController::class, 'show']);",
   "$fatura = Fatura::where('cliente_id', $id)->latest()->first();",
@@ -40,7 +38,7 @@ function drawCode() {
     var indent = (i * 7) % 5 * 16;
     ctx.fillStyle = colors[i % colors.length];
     ctx.fillText(line, indent, i * lh);
-    ctx.fillText(line, indent + 520, i * lh); // preenche a largura toda
+    ctx.fillText(line, indent + 520, i * lh);
   }
 
   return { url: c.toDataURL(), w: w, h: h };
@@ -57,7 +55,6 @@ if (nameEl && codeLayer) {
   }
 
   paintCode();
-  // redesenha quando a fonte mono terminar de carregar
   if (document.fonts) document.fonts.ready.then(paintCode);
 
   var lastPointer = 0;
@@ -74,7 +71,6 @@ if (nameEl && codeLayer) {
   function frame(t) {
     var r = nameEl.getBoundingClientRect();
 
-    // sem mouse em cima, o círculo passeia sozinho pelo nome
     if (t - lastPointer > 1500) {
       target.x = r.width * (0.5 + 0.42 * Math.sin(t / 2600));
       target.y = r.height * (0.5 + 0.35 * Math.sin(t / 1700));
@@ -98,8 +94,6 @@ if (nameEl && codeLayer) {
   }
 }
 
-// --- barra de progresso ------------------------------------------------
-
 var bar = document.querySelector(".progress");
 
 function updateProgress() {
@@ -110,8 +104,6 @@ function updateProgress() {
 window.addEventListener("scroll", updateProgress, { passive: true });
 window.addEventListener("resize", updateProgress);
 updateProgress();
-
-// --- seções aparecem ao rolar ------------------------------------------
 
 if ("IntersectionObserver" in window) {
   var io = new IntersectionObserver(function (entries) {
@@ -128,11 +120,9 @@ if ("IntersectionObserver" in window) {
   document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
 }
 
-// --- clicar no e-mail copia o endereço ---------------------------------
-
 document.querySelectorAll(".copy").forEach(function (link) {
   link.addEventListener("click", function (e) {
-    if (!navigator.clipboard) return; // sem suporte: deixa o mailto: seguir
+    if (!navigator.clipboard) return; 
 
     e.preventDefault();
     navigator.clipboard.writeText(link.dataset.copy).then(function () {
